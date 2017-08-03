@@ -2,8 +2,7 @@ import json
 import os
 
 from flask import Flask, jsonify, send_from_directory
-
-from viewObjects import point
+from parsers import *
 
 app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -24,10 +23,10 @@ def index():
     return '<h1>KG Authoring</h1><p>KG Authoring is a web service that generates JSON readable by KGJS from more author-friendly formats.</p>'
 
 
-@app.route('/<name>', methods=['GET'])
-def test_json(name):
-    c1 = open_json_file('data/'+name+'.json')
-    return allow_cors(jsonify(c1))
+@app.route('/convert/<name>', methods=['GET'])
+def convert_json(name):
+    author = open_json_file('author/'+name+'.json')
+    return allow_cors(jsonify(parser.parse(author)))
 
 
 # Note: this will be replaced by an actual database someday

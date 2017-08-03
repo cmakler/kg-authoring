@@ -1,0 +1,135 @@
+{
+  "aspectRatio": 1,
+  "params": [
+    {
+      "name": "p1",
+      "value": "3",
+      "min": "0.1",
+      "max": "10",
+      "round": "0.1"
+    },
+    {
+      "name": "a",
+      "value": "0.5",
+      "min": "0.05",
+      "max": "0.95",
+      "round": "0.001"
+    },
+    {
+      "name": "p2",
+      "value": "4",
+      "min": "0.1",
+      "max": "10",
+      "round": "0.1"
+    },
+    {
+      "name": "m",
+      "value": "120",
+      "min": "0",
+      "max": "200",
+      "round": "10"
+    }
+  ],
+  "restrictions": [
+    {
+      "expression": "params.m/params.p1",
+      "min": "1",
+      "max": "100"
+    },
+    {
+      "expression": "params.m/params.p2",
+      "min": "1",
+      "max": "100"
+    }
+  ],
+  "graphs": [
+    {
+      "xAxis": {
+          "title": "Units of Good 1",
+          "orient": "bottom",
+          "domain": [0,100],
+          "range": [0,0.9]
+        },
+      "yAxis": {
+          "title": "Units of Good 2",
+          "orient": "left",
+          "domain": [0,100],
+          "range": [1,0.05]
+        },
+      "objects": [
+        {
+          "type": "segment",
+          "def": {
+            "a": ["params.m/params.p1", 0],
+            "b": [0, "params.m/params.p2"],
+            "stroke": "green",
+            "strokeWidth": 2,
+            "drag": [{
+              "directions": "xy",
+              "param": "m",
+              "expression": "drag.x*params.p1 + drag.y*params.p2"
+            }],
+            "label": "BL"
+          }
+        },
+        {
+          "type": "curve",
+          "def": {
+            "data": {
+              "type": "levelSetThroughPoint",
+              "def": {
+                "point": ["params.a*params.m/params.p1","(1-params.a)*params.m/params.p2"],
+                "fn": {
+                  "type": "CobbDouglas",
+                  "def": {
+                    "alpha": 0.5
+                  }
+                }
+              }
+            },
+            "strokeWidth": 2,
+            "stroke": "purple",
+            "label": "U"
+          }
+        },
+        {
+          "type": "point",
+          "def": {
+            "coordinates": ["params.a*params.m/params.p1","(1-params.a)*params.m/params.p2"],
+            "label": {
+              "text": "X"
+            },
+            "drag": [{
+              "directions": "xy",
+              "param": "a",
+              "expression": "drag.x*params.p1/params.m"
+            }]
+          }
+        },
+        {
+          "type": "point",
+          "def": {
+            "coordinates": ["params.m/params.p1", 0],
+            "drag": [{
+              "directions": "x",
+              "param": "p1",
+              "expression": "params.m/drag.x"
+            }]
+          }
+        },
+        {
+          "type": "point",
+          "def": {
+            "coordinates": [0, "params.m/params.p2"],
+            "drag": [{
+              "directions": "y",
+              "param": "p2",
+              "expression": "params.m/drag.y"
+            }]
+          }
+        }
+      ]
+    }
+  ]
+
+}
