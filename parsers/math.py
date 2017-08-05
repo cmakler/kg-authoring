@@ -11,21 +11,15 @@ class CurveData:
 
 class MathFunction:
     def __init__(self, fn_def):
-        self.name = str(uuid.uuid4())
         self.fn_def = fn_def
-
-    def get_name(self):
-        return self.name
 
 
 class UnivariateFunction(MathFunction):
-    def to_json(self, export_json):
-        json = {
-            "name": self.name,
+    def to_json(self):
+        return {
             "fn": self.fn_def['fn'],
             "ind": self.fn_def['ind']
         }
-        export_json['univariateFunctions'].append(json)
 
 
 class MultivariateFunction(MathFunction):
@@ -34,12 +28,20 @@ class MultivariateFunction(MathFunction):
 
 
 class CobbDouglasFunction(MultivariateFunction):
-    def level_set(self, point):
+
+    def value(self, point):
+        alpha = str(self.fn_def['alpha'])
+        return '((%s)^(%s))*((%s)^(1 - %s))' % (point[0], alpha, point[1], alpha)
+
+    def level_set(self, level):
         alpha = str(self.fn_def['alpha'])
         return [
-            UnivariateFunction({"fn": "((%s)/x)^(%s/(1 - %s))*%s" % (point[0], alpha, alpha, point[1]), "ind": "x"}),
-            UnivariateFunction({"fn": "((%s)/y)^((1 - %s)/(%s))*%s" % (point[1], alpha, alpha, point[0]), "ind": "y"})
+            UnivariateFunction({"fn": "((%s)/y^(1 - %s))^(1/%s)" % (level, alpha, alpha), "ind": "y"}),
+            UnivariateFunction({"fn": "((%s)/x^(%s))^(1/(1 - %s))" % (level, alpha, alpha), "ind": "x"})
         ]
+
+    def level_set_through_point(self, point):
+        return self.level_set(self.value(point))
 
 
 class LevelSetThroughPoint:
@@ -48,4 +50,5 @@ class LevelSetThroughPoint:
         fn = data_def['fn']
         if fn['type'] == 'CobbDouglas':
             self.fn = CobbDouglasFunction(fn['def'])
-        self.univariate_functions = self.fn.level_set(self.point)
+        univariate_functions = self.fn.level_set_through_point(self.point)
+        self.univariate_functions = [uf.to_json() for uf in univariate_functions]

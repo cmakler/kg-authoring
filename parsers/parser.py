@@ -1,9 +1,14 @@
 from parsers.authoring_objects import *
+from schemas.econ import EconAuthoringObjects
 
 KGJS = 'kgjs'
 
 
 def parse(author, export_schema=KGJS):
+
+    if author.get('schema') == 'econ':
+        author = EconAuthoringObjects(author).to_authoring_json()
+
     authoring_objects = AuthoringObjects(author)
 
     # export according to the requested export_schema
