@@ -10,7 +10,7 @@ def divide_strs(a, b):
 
 
 def param_name(s):
-    return s.replace('params.','')
+    return s.replace('params.', '')
 
 
 class SchemaParser:

@@ -67,16 +67,16 @@
             "m": "params.m",
             "label": "BL",
             "draggable": true,
-            "handles": false
+            "handles": true
           }
         },
         {
           "type": "indifferenceCurve",
           "def": {
             "utilityFunction": {
-                  "type": "CobbDouglas",
+                  "type": "Substitutes",
                   "def": {
-                    "alpha": 0.5
+                    "coefficients": [1,2]
                   }
                 },
             "point": ["params.a*params.m/params.p1","(1-params.a)*params.m/params.p2"],

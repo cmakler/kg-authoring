@@ -137,8 +137,10 @@ class Segment(GeometricGraphObject):
 class Curve(GeometricGraphObject):
     def to_json(self, export_json):
         json = self.get_defs(['clipPathName', 'drag'])
-        json['univariateFunctions'] = CurveData(self.objectDef['data']).data_object.univariate_functions
-        export_json['curves'].append(json)
+        for curve_data in CurveData(self.objectDef['data']).data_object:
+            curve_json = dict(json)
+            curve_json.update(curve_data)
+            export_json['curves'].append(curve_json)
 
 
 class Point(GeometricGraphObject):

@@ -37,7 +37,6 @@ class AuthoringObjects:
                 'xScales': [],
                 'yScales': [],
                 'clipPaths': [],
-                'univariateFunctions': [],
                 'segments': [],
                 'curves': [],
                 'axes': [],

@@ -79,6 +79,11 @@ class BudgetLine(EconAuthoringObject):
 class IndifferenceCurve(EconAuthoringObject):
     def to_json(self):
         d = self.obj_def
+        utility_type = d.get('utilityFunction').get('type')
+        if utility_type == 'Complements' or utility_type == 'PerfectComplements':
+            d['utilityFunction']['type'] = 'Min'
+        if utility_type == 'Substitutes' or utility_type == 'PerfectSubstitutes':
+            d['utilityFunction']['type'] = 'Linear'
         data = {}
         if d.get('point'):
             data = {
