@@ -34,14 +34,6 @@
       "rangeMax": "0.05"
     }
   ],
-  "dragListeners": [
-    {
-      "name": "x",
-      "dragDirections": "x",
-      "param": "x",
-      "expression": "params.x + drag.dx"
-    }
-  ],
   "axes": [
     {
       "xScaleName": "square",
@@ -67,8 +59,12 @@
       "xScaleName": "square",
       "yScaleName": "imaginary",
       "clipPathName": "graph1",
-      "dragListenerNames": [
-        "x"
+      "drag": [
+        {
+          "directions": "x",
+          "param": "x",
+          "expression": "params.x + drag.dx"
+        }
       ]
     },
     {
@@ -88,7 +84,13 @@
       "xPixelOffset": "5",
       "yPixelOffset": "-15",
       "fontSize": "8",
-      "dragListenerNames": ["x"]
+      "drag": [
+        {
+          "directions": "x",
+          "param": "x",
+          "expression": "params.x + drag.dx"
+        }
+      ]
     },
     {
       "x": "(params.x < 0) ? 0 : (params.x)^0.5",
