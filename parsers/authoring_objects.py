@@ -75,15 +75,98 @@ class Graph(AuthoringObject):
         return sub_objects
 
 
+class Slider(AuthoringObject):
+    def create_sub_objects(self):
+
+        d = self.objectDef
+
+        x_scale = Scale({
+            'dim': 'x',
+            'domain': d['domain'],
+            'range': d['range']
+        })
+
+        y_scale = Scale({
+            'dim': 'y'
+        })
+
+        if d.get('noAxis'):
+
+            return [x_scale, y_scale, Label({
+                'xScaleName': x_scale.name,
+                'yScaleName': y_scale.name,
+                'coordinates': [d['domain'][0], d['y']],
+                'text': '`%s = ${params.%s.toFixed(2)}`' % (d['paramLabel'], d['param']),
+                'drag': [{
+                    'directions': 'x',
+                    'param': d['param'],
+                    'expression': 'params.%s + drag.dx' % d['param']
+                }]
+            })]
+
+        else:
+
+            axis = Axis({
+                'xScaleName': x_scale.name,
+                'yScaleName': y_scale.name,
+                'intercept': d['y'],
+                'orient': 'bottom',
+                'ticks': 2
+            })
+
+            point = Point({
+                'xScaleName': x_scale.name,
+                'yScaleName': y_scale.name,
+                'coordinates': ['params.%s' % d['param'], d['y']],
+                'drag': [{
+                    'directions': 'x',
+                    'param': d['param'],
+                    'expression': 'params.%s + drag.dx' % d['param']
+                }]
+            })
+
+            label = Label({
+                'xScaleName': x_scale.name,
+                'yScaleName': y_scale.name,
+                'coordinates': [d['domain'][1], d['y']],
+                'xPixelOffset': 20,
+                'yPixelOffset': -10,
+                'text': '`%s = ${params.%s.toFixed(2)}`' % (d['paramLabel'], d['param']),
+                'drag': [{
+                    'directions': 'x',
+                    'param': d['param'],
+                    'expression': 'params.%s + drag.dx' % d['param']
+                }]
+            })
+
+        return [x_scale, y_scale, axis, point, label]
+
+
 class Scale(AuthoringObject):
     def to_json(self, parsed):
         json = {
-            'name': self.name,
-            'domainMin': str(self.objectDef['domain'][0]),
-            'domainMax': str(self.objectDef['domain'][1]),
-            'rangeMin': str(self.objectDef['range'][0]),
-            'rangeMax': str(self.objectDef['range'][1])
+            'name': self.name
         }
+        if self.objectDef.get('domain'):
+            json.update({
+                'domainMin': str(self.objectDef.get('domain')[0]),
+                'domainMax': str(self.objectDef.get('domain')[1]),
+            })
+        else:
+            json.update({
+                'domainMin': '0',
+                'domainMax': '1',
+            })
+        if self.objectDef.get('range'):
+                json.update({
+                    'rangeMin': str(self.objectDef.get('range')[0]),
+                    'rangeMax': str(self.objectDef.get('range')[1]),
+                })
+        else:
+                json.update({
+                    'rangeMin': '0',
+                    'rangeMax': '1',
+                })
         if self.objectDef['dim'] == 'x':
             parsed['xScales'].append(json)
         else:
@@ -102,7 +185,7 @@ class GraphObject(AuthoringObject):
 
 class Axis(GraphObject):
     def to_json(self, parsed):
-        json = self.get_defs(['orient', 'title'])
+        json = self.get_defs(['orient', 'title', 'ticks', 'intercept'])
         parsed['axes'].append(json)
 
 
@@ -115,7 +198,7 @@ class ClipPath(GraphObject):
 
 class Label(GraphObject):
     def to_json(self, export_json):
-        json = self.get_defs(['text', 'fontSize', 'xPixelOffset', 'yPixelOffset'])
+        json = self.get_defs(['clipPathName', 'text', 'fontSize', 'xPixelOffset', 'yPixelOffset','drag'])
         self.extract_coordinates(json)
         export_json['labels'].append(json)
 
@@ -148,7 +231,7 @@ class Point(GeometricGraphObject):
         sub_objects = []
         if 'label' in self.objectDef.keys():
             label_def = self.objectDef['label']
-            label_def.update(self.get_defs(['drag', 'coordinates']))
+            label_def.update(self.get_defs(['clipPathName', 'drag', 'coordinates']))
             label_def.update({
                 'fontSize': '8',
                 'xPixelOffset': '5',
@@ -158,7 +241,7 @@ class Point(GeometricGraphObject):
         return sub_objects
 
     def to_json(self, export_json):
-        json = self.get_defs(['drag'])
+        json = self.get_defs(['clipPathName', 'drag'])
         self.extract_coordinates(json)
         export_json['points'].append(json)
         for obj in self.sub_objects:

@@ -5,7 +5,6 @@ KGJS = 'kgjs'
 
 
 def parse(author, export_schema=KGJS):
-
     if author.get('schema') == 'econ':
         author = EconAuthoringObjects(author).to_authoring_json()
 
@@ -22,6 +21,9 @@ class AuthoringObjects:
             if key == 'graphs':
                 for graph_def in author['graphs']:
                     self.authoring_objects.append(Graph(graph_def))
+            if key == 'sliders':
+                for slider_def in author['sliders']:
+                    self.authoring_objects.append(Slider(slider_def))
             else:
                 self.authoring_objects.append(AuthoringObject(author[key], key))
 

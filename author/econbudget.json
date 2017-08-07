@@ -4,11 +4,18 @@
   "aspectRatio": 1,
   "params": [
     {
+      "name": "alpha",
+      "value": 0.5,
+      "min": 0.05,
+      "max": 0.95,
+      "round": "0.01"
+    },
+    {
       "name": "p1",
       "value": "3",
       "min": "0.1",
       "max": "10",
-      "round": "0.1"
+      "round": "0.01"
     },
     {
       "name": "a",
@@ -22,14 +29,14 @@
       "value": "4",
       "min": "0.1",
       "max": "10",
-      "round": "0.1"
+      "round": "0.01"
     },
     {
       "name": "m",
       "value": "120",
       "min": "0",
-      "max": "200",
-      "round": "10"
+      "max": "400",
+      "round": "1"
     }
   ],
   "restrictions": [
@@ -44,28 +51,61 @@
       "max": "100"
     }
   ],
+  "sliders": [
+    {
+      "param": "alpha",
+      "paramLabel": "\\\\alpha",
+      "domain": [0,1],
+      "range": [0.8, 0.95],
+      "y": 0.4
+    },
+    {
+      "param": "p1",
+      "paramLabel": "p_1",
+      "domain": [0,10],
+      "range": [0.8, 0.95],
+      "y": 0.5,
+      "noAxis": true
+    },
+    {
+      "param": "p2",
+      "paramLabel": "p_2",
+      "domain": [0,10],
+      "range": [0.8, 0.95],
+      "y": 0.6,
+      "noAxis": true
+    },
+    {
+      "param": "m",
+      "paramLabel": "m",
+      "domain": [0,400],
+      "range": [0.8, 0.95],
+      "y": 0.7,
+      "noAxis": true
+    }
+  ],
   "graphs": [
     {
       "xAxis": {
           "title": "Units of Good 1",
           "orient": "bottom",
           "domain": [0,100],
-          "range": [0,0.9]
+          "range": [0,0.7]
         },
       "yAxis": {
           "title": "Units of Good 2",
           "orient": "left",
           "domain": [0,100],
-          "range": [1,0.05]
+          "range": [1,0.3]
         },
       "objects": [
         {
           "type": "indifferenceMap",
           "def": {
             "utilityFunction": {
-                  "type": "Substitutes",
+                  "type": "CobbDouglas",
                   "def": {
-                    "alpha": "1/3"
+                    "alpha": "params.alpha"
                   }
                 },
             "levels": [[10,10],[20,20],[30,30],[40,40],[50,50],[60,60],[70,70],[80,80],[90,90]],
@@ -76,9 +116,9 @@
           "type": "indifferenceCurve",
           "def": {
             "utilityFunction": {
-                  "type": "Substitutes",
+                  "type": "CobbDouglas",
                   "def": {
-                    "alpha": "1/3"
+                    "alpha": "params.alpha"
                   }
                 },
             "point": ["params.a*params.m/params.p1","(1-params.a)*params.m/params.p2"],

@@ -25,8 +25,14 @@ def index():
 
 @app.route('/convert/<name>', methods=['GET'])
 def convert_json(name):
+    print('received request for ', name)
     author = open_json_file('author/'+name+'.json')
-    return allow_cors(jsonify(parser.parse(author)))
+    print('opened json')
+    converted = parser.parse(author)
+    print('converted json')
+    formatted = jsonify(converted)
+    print('jsonified result')
+    return allow_cors(formatted)
 
 
 # Note: this will be replaced by an actual database someday
