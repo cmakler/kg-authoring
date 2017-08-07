@@ -4,7 +4,7 @@ from schemas.schema_parser import *
 class EconAuthoringObjects(SchemaParser):
     def __init__(self, author_json):
         super(EconAuthoringObjects, self).__init__(author_json)
-        self.special_types = ['budgetLine', 'indifferenceCurve']
+        self.special_types = ['budgetLine', 'indifferenceCurve', 'indifferenceMap']
 
     def handle_special_type(self, obj):
         obj_type = obj.get('type')
@@ -13,6 +13,8 @@ class EconAuthoringObjects(SchemaParser):
             return BudgetLine(obj_def).to_json()
         elif obj_type == 'indifferenceCurve':
             return IndifferenceCurve(obj_def).to_json()
+        elif obj_type == 'indifferenceMap':
+            return indifferenceMap(obj_def).to_json()
         else:
             return obj
 
@@ -53,6 +55,8 @@ class BudgetLine(EconAuthoringObject):
                 'type': 'point',
                 'def': {
                     'coordinates': [x_intercept, 0],
+                    'fill': 'green',
+                    'r': 4,
                     'drag': [{
                         'directions': 'x',
                         'param': param_name(d['p1']),
@@ -64,6 +68,8 @@ class BudgetLine(EconAuthoringObject):
                 'type': 'point',
                 'def': {
                     'coordinates': [0, y_intercept],
+                    'fill': 'green',
+                    'r': 4,
                     'drag': [{
                         'directions': 'y',
                         'param': param_name(d['p2']),
@@ -79,39 +85,59 @@ class BudgetLine(EconAuthoringObject):
 class IndifferenceCurve(EconAuthoringObject):
     def to_json(self):
         d = self.obj_def
+        if d.get('map'):
+            stroke_width = 1
+            stroke = 'lightgrey'
+        else:
+            stroke_width = 2
+            stroke = 'purple'
+        label = d.get('label') or 'U'
         utility_type = d.get('utilityFunction').get('type')
         if utility_type == 'Complements' or utility_type == 'PerfectComplements':
             d['utilityFunction']['type'] = 'Min'
         if utility_type == 'Substitutes' or utility_type == 'PerfectSubstitutes':
             d['utilityFunction']['type'] = 'Linear'
-        data = {}
-        if d.get('point'):
-            data = {
-                'type': 'levelSetThroughPoint',
-                'def': {
-                    'point': d['point'],
-                    'fn': d['utilityFunction']
-                }
-            }
-        elif d.get('level'):
-            data = {
-                'type': 'levelSet',
-                'def': {
-                    'level': d['level'],
-                    'fn': d['utilityFunction']
-                }
-            }
-        else:
-            print('need to define an indifference curve either by a level or a point')
 
         curve = {
             'type': 'curve',
             'def': {
-                'data': data,
-                'strokeWidth': 2,
-                'stroke': 'purple',
-                'label': 'U'
+                'data': {
+                    'type': 'levelSet',
+                    'def': {
+                        'point': d.get('point'),
+                        'level': d.get('level'),
+                        'fn': d['utilityFunction']
+                    }
+                },
+                'strokeWidth': stroke_width,
+                'stroke': stroke,
+                'label': label
             }
         }
 
         return curve
+
+
+class indifferenceMap(EconAuthoringObject):
+    def to_json(self):
+        d = self.obj_def
+        d['map'] = True
+
+        objs = []
+
+        for level in d['levels']:
+            if type(level) is list:
+                d['point'] = level
+                objs.append({
+                    'type': 'point',
+                    'def': {
+                        'coordinates': d['point'],
+                        'fill': 'lightgrey',
+                        'r': 3
+                    }
+                })
+            else:
+                d['level'] = level
+            objs.append(IndifferenceCurve(d).to_json())
+
+        return objs

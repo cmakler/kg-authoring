@@ -5,8 +5,8 @@ class CurveData:
     def __init__(self, curve_data_def):
         type = curve_data_def['type']
         data_def = curve_data_def['def']
-        if type == 'levelSetThroughPoint':
-            self.data_object = LevelSetThroughPoint(data_def).curveData
+        if type == 'levelSet':
+            self.data_object = LevelSet(data_def).curveData
 
 
 class MathFunction:
@@ -42,9 +42,6 @@ class MultivariateFunction(MathFunction):
     def value(self, point):
         return 0
 
-    def level_set_through_point(self, point):
-        return self.level_set(self.value(point))
-
 
 class CobbDouglasFunction(MultivariateFunction):
     def value(self, point):
@@ -60,12 +57,14 @@ class CobbDouglasFunction(MultivariateFunction):
             UnivariateFunction({
                 "fn": "(%s/y^(%s))^(1/(%s))" % (level, b, a),
                 "ind": "y",
-                "min": "(%s)^(1/(%s + %s))" % (level, a, b)
+                "min": "(%s)^(1/(%s + %s))" % (level, a, b),
+                "samplePoints": 30
             }),
             UnivariateFunction({
                 "fn": "(%s/x^(%s))^(1/(%s))" % (level, a, b),
                 "ind": "x",
-                "min": "(%s)^(1/(%s + %s))" % (level, a, b)
+                "min": "(%s)^(1/(%s + %s))" % (level, a, b),
+                "samplePoints": 30
             })
         ]
 
@@ -99,7 +98,7 @@ class Min(MultivariateFunction):
         for inx, p in enumerate(point):
             v.append('(%s)*(%s)' % (p, self.exponents[inx]))
         minimands = ','.join(v)
-        return '(min(%s)' % minimands
+        return '(min(%s))' % minimands
 
     def level_set(self, level):
         a = self.coefficients[0]
@@ -111,22 +110,31 @@ class Min(MultivariateFunction):
                 "min": "%s/(%s)" % (level, a),
                 "samplePoints": 2
             }),
+            UnivariateFunction({
+                "fn": "%s/(%s)" % (level, a),
+                "ind": "y",
+                "min": "%s/(%s)" % (level, b),
+                "samplePoints": 2
+            })
         ]
 
 
-class LevelSetThroughPoint:
+class LevelSet:
     def __init__(self, data_def):
         self.point = data_def['point']
+        interpolation = 'curveMonotoneX'
         fn = data_def['fn']
         if fn['type'] == 'CobbDouglas':
             self.fn = CobbDouglasFunction(fn['def'])
-            interpolation = 'curveMonotoneX'
         if fn['type'] == 'Min':
             self.fn = Min(fn['def'])
             interpolation = 'curveLinear'
         if fn['type'] == 'Linear':
             self.fn = Linear(fn['def'])
             interpolation = 'curveLinear'
-        univariate_functions = self.fn.level_set_through_point(self.point)
-        self.curveData = [{'univariateFunction': uf.to_json(), 'interpolation': interpolation} for uf in
-                          univariate_functions]
+
+        def curve_json(uf):
+            return {'univariateFunction': uf.to_json(), 'interpolation': interpolation}
+
+        self.curveData = [curve_json(uf) for uf in self.fn.level_set(
+            data_def['level'] if data_def.get('level') else self.fn.value(data_def.get('point')))]

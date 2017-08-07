@@ -122,7 +122,7 @@ class Label(GraphObject):
 
 class GeometricGraphObject(GraphObject):
     def get_defs(self, keys=[]):
-        keys = list(set(keys + ['clipPathName', 'color', 'stroke', 'strokeWidth']))
+        keys = list(set(keys + ['clipPathName', 'color', 'stroke', 'strokeWidth', 'fill', 'r']))
         return super(GeometricGraphObject, self).get_defs(keys)
 
 
