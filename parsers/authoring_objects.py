@@ -83,7 +83,7 @@ class Slider(AuthoringObject):
         x_scale = Scale({
             'dim': 'x',
             'domain': d['domain'],
-            'range': d['range']
+            'range': [d['x'], d['x']+d['width']]
         })
 
         y_scale = Scale({

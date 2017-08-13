@@ -14,7 +14,7 @@ class EconAuthoringObjects(SchemaParser):
         elif obj_type == 'indifferenceCurve':
             return IndifferenceCurve(obj_def).to_json()
         elif obj_type == 'indifferenceMap':
-            return indifferenceMap(obj_def).to_json()
+            return IndifferenceMap(obj_def).to_json()
         else:
             return obj
 
@@ -118,7 +118,7 @@ class IndifferenceCurve(EconAuthoringObject):
         return curve
 
 
-class indifferenceMap(EconAuthoringObject):
+class IndifferenceMap(EconAuthoringObject):
     def to_json(self):
         d = self.obj_def
         d['map'] = True

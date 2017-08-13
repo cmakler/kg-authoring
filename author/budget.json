@@ -1,7 +1,7 @@
 {
   "schema": "econ",
   "version": 1,
-  "aspectRatio": 1,
+  "aspectRatio": 1.25,
   "params": [
     {
       "name": "alpha",
@@ -56,15 +56,17 @@
       "param": "alpha",
       "paramLabel": "\\\\alpha",
       "domain": [0,1],
-      "range": [0.8, 0.95],
-      "y": 0.4
+      "x": 0.8,
+      "y": 0.1,
+      "width": 0.15
     },
     {
       "param": "p1",
       "paramLabel": "p_1",
       "domain": [0,10],
-      "range": [0.8, 0.95],
-      "y": 0.5,
+      "x": 0.8,
+      "y": 0.2,
+      "width": 0.15,
       "noAxis": true
     },
     {
@@ -72,7 +74,9 @@
       "paramLabel": "p_2",
       "domain": [0,10],
       "range": [0.8, 0.95],
-      "y": 0.6,
+      "x": 0.8,
+      "y": 0.3,
+      "width": 0.15,
       "noAxis": true
     },
     {
@@ -80,7 +84,9 @@
       "paramLabel": "m",
       "domain": [0,400],
       "range": [0.8, 0.95],
-      "y": 0.7,
+      "x": 0.8,
+      "y": 0.4,
+      "width": 0.15,
       "noAxis": true
     }
   ],
@@ -90,13 +96,13 @@
           "title": "Units of Good 1",
           "orient": "bottom",
           "domain": [0,100],
-          "range": [0,0.7]
+          "range": [0,0.8]
         },
       "yAxis": {
           "title": "Units of Good 2",
           "orient": "left",
           "domain": [0,100],
-          "range": [1,0.3]
+          "range": [1,0]
         },
       "objects": [
         {
