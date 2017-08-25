@@ -43,7 +43,8 @@ class AuthoringObjects:
                 'curves': [],
                 'axes': [],
                 'points': [],
-                'labels': []
+                'labels': [],
+                'legends': []
             })
 
             for obj in self.authoring_objects:

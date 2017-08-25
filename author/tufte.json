@@ -1,0 +1,80 @@
+{
+  "schema": "econ",
+  "version": 1,
+  "params": [
+    {
+      "name": "x",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "round": "0.1"
+    },
+    {
+      "name": "y",
+      "value": 50,
+      "min": 0,
+      "max": 100,
+      "round": "0.25"
+    }
+  ],
+  "legends": [{
+    "title": "Hello",
+    "description": "`The point (x,y) is at (${params.x.toFixed(2)},${params.y.toFixed(2)})`",
+    "sliders": [
+      {"param": "x", "label": "x"},
+      {"param": "y", "label": "y"}
+    ]
+  }],
+  "graphs": [
+    {
+      "xAxis": {
+          "title": "Units of Good 1",
+          "orient": "top",
+          "domain": [0,100],
+          "range": [0,1]
+        },
+      "yAxis": {
+          "title": "Units of Good 2",
+          "orient": "left",
+          "domain": [0,100],
+          "range": [0,1]
+        },
+      "objects": [
+        {
+          "type": "segment",
+          "def": {
+            "a": ["params.x",0],
+            "b": ["params.x",100]
+          }
+        },
+        {
+          "type": "segment",
+          "def": {
+            "a": [0,"params.y"],
+            "b": [100,"params.y"]
+          }
+        },
+        {
+          "type": "point",
+          "def": {
+            "coordinates": ["params.x","params.y"],
+            "label": {
+              "text": "`(${params.x.toFixed(2)},${params.y.toFixed(2)})`"
+            },
+            "drag": [{
+              "directions": "x",
+              "param": "x",
+              "expression": "drag.x"
+            },
+            {
+              "directions": "y",
+              "param": "y",
+              "expression": "drag.y"
+            }]
+          }
+        }
+      ]
+    }
+  ]
+
+}
