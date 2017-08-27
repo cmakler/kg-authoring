@@ -1,0 +1,23 @@
+div.kg-container text {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+div.kg-container text::selection {
+    background: none;
+}
+
+text {
+    font-size: 10px;
+}
+
+input {
+    font-family: KaTeX_Main;
+}
+
+.katex {
+    font-size: 1em
+}

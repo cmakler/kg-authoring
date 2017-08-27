@@ -42,5 +42,17 @@ def send_data(path=None):
     return allow_cors(send_from_directory(directory, path))
 
 
+@app.route('/js/<path:path>', methods=['GET'])
+def send_js(path=None):
+    directory = os.path.join(APP_ROOT, 'static/js/')
+    return allow_cors(send_from_directory(directory, path))
+
+
+@app.route('/css/<path:path>', methods=['GET'])
+def send_css(path=None):
+    directory = os.path.join(APP_ROOT, 'static/css/')
+    return allow_cors(send_from_directory(directory, path))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
