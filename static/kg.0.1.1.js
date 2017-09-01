@@ -581,10 +581,10 @@ var KGAuthor;
             return [
                 new KGAuthor.Rectangle({
                     clipPathName: clipPathName,
-                    x1: graph.def.xAxis.domain[0],
-                    x2: graph.def.xAxis.domain[1],
-                    y1: graph.def.yAxis.domain[0],
-                    y2: graph.def.yAxis.domain[1]
+                    x1: graph.def.xAxis.min,
+                    x2: graph.def.xAxis.max,
+                    y1: graph.def.yAxis.min,
+                    y2: graph.def.yAxis.max
                 }, graph),
                 new KGAuthor.ClipPath({
                     "name": clipPathName,

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Experimenting with Tufte styles and math</title>
-    <link rel="stylesheet" href="../kg-tufte.0.1.1.css"/>
-    <script src="../kg.0.1.1.js"></script>
+    <link rel="stylesheet" href="../build/lib/kg-tufte.css">
+    <link rel="stylesheet" href="../build/kg.css"/>
+    <script src="../build/lib/kg-lib.js"></script>
 </head>
 <body>
 <article>
@@ -32,7 +33,7 @@
             the figure. For example, most of the time one should introduce a figure directly into the main flow of
             discussion, like so:</p>
         <figure class="fullwidth">
-            <div id="diagramDiv3" class="kg-container" src="json/budget.json"></div>
+            <div id="diagramDiv3" class="kg-container" src="../json/budget.json"></div>
         </figure>
         <p>Figures should try to use the <code>figure</code> element, which by default are constrained to the main
             column. Don’t wrap figures in a paragraph tag. Any label or margin note goes in a regular margin note inside
@@ -40,6 +41,7 @@
             discussion, like so:</p>
     </section>
 </article>
+<script src="../build/kg.js"></script>
 <script>
     renderMathInElement(document.body, {
         delimiters: [
