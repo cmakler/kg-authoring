@@ -2,35 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Experimenting with Tufte styles and math</title>
+    <title>Scarcity and Choice</title>
     <link rel="stylesheet" href="../kg-tufte.0.1.1.css"/>
     <script src="../kg.0.1.1.js"></script>
 </head>
 <body>
 <article>
     <section>
-        <h1>Optimal Choice II: Kinks and Corners</h1>
+        <h1>Scarcity and Choice</h1>
+        <p>At its core, economics is about the choices we face -- as a individuals, or as part of a firm, or as a
+            society. We have at our disposal various resources (time, money) and various ways to spend those
+            resources.</p>
+        <p>Because resources are scarce, any choice we make automatically has an <strong><label-for id="oppcost">opportunity cost.Spending an hour studying means spending one hour less watching television, and vice versa; so the act of choosing to spend more resources on one good necessitates the act of </p>
+    </section>
+    <section>
+        <h2>A simple choice: which candy to buy</h2>
+        <p>The budget constraint partitions the available choice space into affordable and unaffordable choices. The
+            standard budget constraint for $n$ goods may be written as
+            $$p_1x_1 + p_2x_2 + \cdots + p_nx_n \le m$$
+            where $p_i$ is the price of good $i$, and $x_i$ is the quantity of good $i$. More generally, using vector
+            notation, we can write this constraint as a dot product:
+            $$\vec{p} \cdot \vec{x} \le m$$
+            where $\vec{p} = [p_1,p_2,...p_n]$ is a vector of the prices of $n$ goods, and $\vec{x} = [x_1,x_2,...,x_n]$
+            is a vector of quantities of $n$ goods.
+        </p>
+        <p>Note that each of the terms in this constraint is measured in dollars: for each good $i$, the term $p_ix_i$
+            represents the expenditure on good $i$:$$\overbrace{\underbrace{p_i}_\frac{\text{dollars}}{\text{units of
+            i}} \times \underbrace{x_i}_\text{units of i}}^\text{dollars}$$</p>
 
     </section>
     <section>
-        <h2>Optimal Consumption</h2>
-        <p>For each of the following utility functions, let's solve for the optimal consumption of Good 1 and Good 2 for
-            general prices $p_1$ and $p_2$ and general income $m$.</p>
-
-    </section>
-    <section>
-        <h3>Perfect Substitutes</h3>
-        <p>Let's think of a situation in which the consumer likes Good 1 half as much as Good 2:
-            $$u(x_1,x_2) = x_1 + 2x_2$$
-            This utility function does NOT satisfy the conditions for using the Lagrange method, since the indifference
-            curves cross the axes and are also not strictly convex. So, we have to apply logic.</p>
-        <p>Figures<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1"
-                                                                                         class="margin-toggle"/><span
-                class="sidenote">especially interactive figures!</span> should try to use the <code>figure</code>
-            element, which by default are constrained to the main
-            column. Don’t wrap figures in a paragraph tag. Any label or margin note goes in a regular margin note inside
-            the figure. For example, most of the time one should introduce a figure directly into the main flow of
-            discussion, like so:</p>
+        <h2>The budget line for two goods</h2>
+        <p>Visually, it's useful to constrain ourselves to two goods, since that's easy to plot. In Good 1 - Good 2
+            space, the "budget line" $p_1x_1 + p_2x_2 = m$ partitions Good 1 - Good 2 space into the set of affordable
+            bundles (beneath the budget line) and the set of unaffordable bundles (above the budget line). All bundles
+            \textit{along} the budget line cost the same amount, and exhaust the available income $m$. For example, in
+            the two-good case with $p_1 = 18$, $p_2 = 6$, and $m = 54$, the budget line would be
+            $$18x_1 + 6x_2 = 54$$
+            which we can plot in Good 1 - Good 2 space as follows:
+        </p>
         <figure class="fullwidth">
             <div id="diagramDiv3" class="kg-container" src="json/budget.json"></div>
         </figure>
