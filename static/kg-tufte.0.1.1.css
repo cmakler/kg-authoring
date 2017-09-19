@@ -292,4 +292,16 @@ input {
     font-size: 1em
 }
 
+.watermark {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  opacity: 0.5;
+  z-index: 99;
+  color: lightgray;
+}
+.watermark a {
+  color: lightgray;
+}
+
 
